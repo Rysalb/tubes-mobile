@@ -1,4 +1,4 @@
-# ui_color_note
+# NotesKu
 
 A new Flutter project.
 
