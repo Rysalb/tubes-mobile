@@ -49,7 +49,7 @@ class _MyAppState extends State<MyApp> {
       providers: [
         ChangeNotifierProvider(
           create: (context) => NotesOperation(),
-        )
+        ),
       ],
       child: ReloadApp(
         builder: (context) => MaterialApp(
