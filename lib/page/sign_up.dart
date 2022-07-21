@@ -1,7 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
-import '../models/auth_services.dart';
 
 class signUpPage extends StatefulWidget {
   signUpPage({Key? key}) : super(key: key);
@@ -18,8 +17,17 @@ class _signUpPageState extends State<signUpPage> {
 //method signUp firebhase
   Future signUp() async {
     try {
+      // create user
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: email.text.trim(), password: password.text.trim());
+        email: email.text.trim(),
+        password: password.text.trim(),
+      );
+      // add user details
+      addUserDetails(
+        email.text.trim(),
+        username.text.trim(),
+      );
+
       showDialog(
           context: context,
           builder: (context) {
@@ -40,8 +48,15 @@ class _signUpPageState extends State<signUpPage> {
     }
   }
 
+  Future addUserDetails(String username, String email) async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .add({'username': username, 'email': email});
+  }
+
   @override
   void dispose() {
+    username.dispose();
     email.dispose();
     password.dispose();
     super.dispose();
@@ -70,6 +85,7 @@ class _signUpPageState extends State<signUpPage> {
                 ),
 
                 //Image.asset("lib/assets/logo.png"),
+                // username text field
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextField(
@@ -82,6 +98,7 @@ class _signUpPageState extends State<signUpPage> {
                     ),
                   ),
                 ),
+                // password text field
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextField(
@@ -96,6 +113,7 @@ class _signUpPageState extends State<signUpPage> {
                   ),
                 ),
 
+                //email text field
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextField(
